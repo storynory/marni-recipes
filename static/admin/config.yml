@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: YOUR_GH_USERNAME/marni-recipes
+  branch: main
+  # We'll add base_url after we deploy the OAuth worker (step 4)
+
+media_folder: "static/uploads"        # where images get committed in repo
+public_folder: "/uploads"             # how the site references them
+
+collections:
+  - name: "recipes"
+    label: "Recipes"
+    folder: "content/recipes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "thumbnail", label: "Thumbnail", widget: "image" }
+      - { name: "ingredients", label: "Ingredients", widget: "list", field: { name: "item", label: "Item", widget: "string" } }
+      - { name: "method", label: "Method", widget: "markdown" }
