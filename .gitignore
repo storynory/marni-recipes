@@ -7,7 +7,11 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
-
+/static/cdn
+/static/uploads
+/static/audio
+# (optional) ignore any CMS temp files
+.cache/
 # OS
 .DS_Store
 Thumbs.db

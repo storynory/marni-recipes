@@ -1,0 +1,45 @@
+/* -------------------------------------------------------
+   BODY EDITOR: works for Markdown (CodeMirror) and Lexical
+   ------------------------------------------------------- */
+
+/* Resize the widget container itself (gives you a grab handle) */
+.body-field .cms-editor-WidgetMarkdown,
+.body-field .cms-editor-WidgetRichText {
+  min-height: 60vh !important;
+  resize: vertical !important;
+  overflow: auto;            /* required for resize handles */
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+/* Markdown editors: CodeMirror 5/6 */
+.body-field .cm-editor,      /* CodeMirror 6 root */
+.body-field .CodeMirror {    /* CodeMirror 5 root */
+  min-height: 60vh !important;
+}
+
+/* Make the internal scroller taller if present */
+.body-field .cm-scroller,
+.body-field .CodeMirror-scroll {
+  min-height: 60vh !important;
+}
+
+/* Lexical editors (common classnames used by Lexical-based widgets) */
+.body-field .lexical-editor,
+.body-field .editor-scroller,
+.body-field .editor-input,
+.body-field .richTextEditor,
+.body-field [contenteditable="true"] {
+  min-height: 60vh !important;
+}
+
+/* Optional: full-width comfort */
+.body-field .cm-editor,
+.body-field .CodeMirror,
+.body-field .lexical-editor {
+  width: 100% !important;
+}
+
+/* Optional: give yourself a visual cue while testing selectors */
+.body-field .cms-editor-WidgetMarkdown,
+   .body-field .cms-editor-WidgetRichText { outline: 2px dashed #9ad; }

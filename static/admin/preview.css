@@ -1,0 +1,39 @@
+/* Comfortable reading width */
+.preview-root {
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* Typographic rhythm */
+.preview-root h1, .preview-root h2, .preview-root h3 {
+  line-height: 1.2;
+  margin: 1.2em 0 0.6em;
+}
+.preview-root p, .preview-root li {
+  line-height: 1.6;
+  margin: 0.75em 0;
+  font-size: 1.05rem;
+}
+
+/* Body copy */
+.preview-root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Images/videos fit the column */
+.preview-root img, .preview-root video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Optional “recipe” niceties */
+.preview-root ul {
+  padding-left: 1.2em;
+}
+.preview-root code {
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.06);
+}

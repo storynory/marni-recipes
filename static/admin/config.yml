@@ -1,11 +1,30 @@
 backend:
   name: github
-  repo: YOUR_GH_USERNAME/marni-recipes
+  repo: storynory/marni-recipes
   branch: main
-  # We'll add base_url after we deploy the OAuth worker (step 4)
 
-media_folder: "static/uploads"        # where images get committed in repo
-public_folder: "/uploads"             # how the site references them
+publish_mode: editorial_workflow   # see #2 below
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+media_libraries:
+  default:
+    config:
+      # (Optional, but helpful) make sure your UI accepts typical image types
+      accept_mime_types:
+        - image/jpeg
+        - image/png
+        - image/webp
+        - image/svg+xml
+
+      transformations:
+        raster_image:        # jpg / png / etc.
+          format: webp       # only 'webp' is supported
+          quality: 85        # default 85
+          width: 2048        # max width (no upscaling)
+          height: 2048       # max height (no upscaling)
+        svg:
+          optimize: true
 
 collections:
   - name: "recipes"
@@ -14,8 +33,15 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { name: "title", label: "Title", widget: "string" }
-      - { name: "date", label: "Date", widget: "datetime" }
-      - { name: "thumbnail", label: "Thumbnail", widget: "image" }
-      - { name: "ingredients", label: "Ingredients", widget: "list", field: { name: "item", label: "Item", widget: "string" } }
-      - { name: "method", label: "Method", widget: "markdown" }
+      - { name: "title", label: "Title", widget: "string" } # keep required (default)
+      - { name: "body", label: "Recipe Notes", widget: "markdown", required: false }
+      - { name: "date", label: "Date", widget: "datetime", required: false }
+      - { name: "thumbnail", label: "Thumbnail", widget: "image", required: false }
+      - name: "ingredients"
+        label: "Ingredients"
+        widget: "list"
+        required: false
+        field: { name: "item", label: "Item", widget: "string" }
+      - { name: "method", label: "Method", widget: "markdown", class: "method-field", required: false }
+      - { name: "draft", label: "Draft", widget: "boolean", default: true, required: false }
+    
