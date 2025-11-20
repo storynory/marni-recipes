@@ -1,0 +1,157 @@
+:root {
+	/* Warm earthy palette for Marni */
+	--prime:      #E3D2B7; /* warm biscuit background */
+	--accent:     #8C4B2E; /* chestnut / clay */
+    --accent:     #00634e; /* chestnut / clay */
+	--light:      #F4E8D7; /* soft cream */
+	--frog-dark:  #00634e; /* deep green – for strong contrast areas */
+	--gray-light: #f8f9fa;
+
+	--text-main:  #333333; /* default text */
+}
+
+body {
+	color: var(--text-main);
+	background-color: var(--light);
+}
+
+/* Background helpers */
+
+.bg-prime {
+	background-color: var(--prime);
+}
+
+.bg-gray {
+	background-color: var(--gray-light);
+}
+
+.bg-light,
+.bg-white {
+	background-color: var(--light);
+}
+
+/* Text colour helpers */
+
+.txt-accent {
+	color: var(--accent);
+}
+
+.text-light,
+.txt-white {
+	color: var(--light);
+}
+
+/* Simple shadow */
+
+.bx-shadow {
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4 {
+	color: var(--text-main);
+}
+
+/* Links */
+
+a {
+	color: var(--accent);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.12em;
+}
+
+a:hover {
+	color: var(--frog-dark);
+}
+
+
+.panel {
+    background-image: radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 3px 3px;
+    background-color: var(--light);
+}
+
+.brd-tp {
+    border-top: 1px solid var(--accent);
+}
+
+
+.brd-btm {
+    border-bottom: 1px solid var(--accent);
+}
+
+/******************************************
+
+🌿 Set 1 — Earthy Olive & Sandstone
+
+(first image)
+
+Background (Sandstone)
+
+Hex: #E7DCC3
+
+Name: Sandstone Cream
+
+Text (Olive Green)
+
+Hex: #3F4A32
+
+Name: Deep Olive Leaf
+
+🌱 Set 2 — Clay & Light Sage
+
+(first image, lower half)
+
+Background (Light Sage)
+
+Hex: #E2E9D8
+
+Name: Soft Sage Mist
+
+Text (Clay Brown)
+
+Hex: #6B3F2D
+
+Name: Baked Clay
+
+🍂 Set 3 — Light & Dark Variants (Cooler Neutral)
+
+(second image)
+
+Light Variant
+
+Background: #F2EBDF — Pale Linen
+
+Text: #7A715C — Mossy Taupe
+
+Dark Variant
+
+Background: #4A4E2C — Deep Woodland Green
+
+Text: #F4E8D7 — Warm Bone
+
+🔥 Set 4 — Warm Terracotta Variants
+
+(third image — the warm one you liked)
+
+Warm Light Variant
+
+Background: #E9A98A — Peach Clay
+
+Text: #8C4B2E — Warm Chestnut
+
+Warm Dark Variant
+
+Background: #A8512F — Terracotta Ember
+
+Text: #F1E2C9 — Cream Limestone
+
+
+
+
+
+***************************************/

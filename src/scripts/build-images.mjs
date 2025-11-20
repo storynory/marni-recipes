@@ -4,8 +4,8 @@ import sharp from 'sharp';
 import crypto from 'node:crypto';
 
 // ---- configuration ----
-const SRC = 'static/uploads';
-const OUT = 'static/cdn';
+const SRC = '../sveltia/static/uploads';
+const OUT = './static/uploads';
 const SIZES = [320, 640, 960, 1280, 1600];
 const FORMATS = ['webp']; // add 'jpg' if you want fallbacks
 const QUALITY = 82;

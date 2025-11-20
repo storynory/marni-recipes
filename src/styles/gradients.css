@@ -1,0 +1,71 @@
+/* Soft noise texture (CSS only, no images)
+
+This is the classic technique: use multiple layered gradients to imitate grain.
+*/
+.panel {
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            rgba(0,0,0,0.015) 0,
+            rgba(0,0,0,0.015) 2px,
+            rgba(0,0,0,0) 3px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            rgba(0,0,0,0.015) 0,
+            rgba(0,0,0,0.015) 1px,
+            rgba(0,0,0,0) 2px
+        );
+    background-color: var(--light); /* or your panel base colour */
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+/*
+
+Gives a faint paper-grain feel — very gentle, no pattern repeats.
+
+2. A linen-style fabric texture
+
+Also done with gradients:
+*/
+.panel {
+    background:
+        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 4px 4px;
+    background-color: var(--light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/*
+A subtle weave that works well behind text without being distracting.
+
+3. Very subtle speckle (paper-like)
+
+This looks nice behind recipes or “rustic” themes:
+*/
+.panel {
+    background-image: radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 3px 3px;
+    background-color: var(--light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/*
+You may need to reduce the opacity depending on the base colour.
+
+4. If you want super subtle (almost invisible)
+
+Just enough to stop a flat colour from looking flat:
+*/
+.panel {
+    background:
+        linear-gradient(0deg, rgba(255,255,255,0.03), rgba(0,0,0,0.03));
+    background-blend-mode: overlay;
+    background-color: var(--light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+

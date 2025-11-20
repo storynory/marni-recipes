@@ -1,0 +1,86 @@
+img {
+	max-width: 100%;
+	border-radius: 4px;
+    margin: 0.5em auto 1em auto;
+}
+
+.hero img {
+    width: 200px;
+    height: 200px;
+}
+
+@media (--desk) {
+  .hero img {
+    width: 300px;
+    height: 300px;
+}
+  
+    
+}
+
+.img-169 {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: auto;
+    object-fit: cover;   /* crops politely */
+}
+
+.icon {
+    display: inline-block;
+    vertical-align: baseline;
+    fill: green;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 3px;
+ 
+}
+
+.icon.home {
+    fill: var(--accent)
+}
+
+.home {
+    color: var(--accent)
+}
+
+.coffee {
+    color: brown;
+}
+
+.icon.coffee {
+    fill: brown;
+}
+.icon.cake {
+    fill: red;
+}
+.cake {
+    color: red;
+}
+
+
+
+.icon.lunch {
+    fill: olivedrab;
+}
+
+.lunch {
+    color: olivedrab;
+}
+
+
+.icon.breakfast {
+    fill: #333;
+}
+
+.breakfast {
+    color: #333;
+}
+
+.icon.dinner {
+    fill: blue;
+}
+
+.dinner {
+    color: blue;
+}
