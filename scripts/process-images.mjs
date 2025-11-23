@@ -3,19 +3,7 @@ import fs from 'node:fs/promises';
 import { watch as fsWatch } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
-import crypto from 'node:crypto';
 
-function toWebPath(rel) {
-	// Turn Windows backslashes into segments, encode each part, then join with /
-	const segments = rel.split(path.sep);
-	const encoded = segments.map(encodeURIComponent).join('/');
-	return '/uploads/' + encoded;
-}
-function toEncodedRelPath(rel) {
-	// Split on platform separator, encode each path segment safely
-	const segments = rel.split(path.sep).map(encodeURIComponent);
-	return segments.join('/');
-}
 // ----------------------------------------------------
 // CONFIG – update these and almost nothing else
 // ----------------------------------------------------
@@ -29,24 +17,21 @@ const CONFIG = {
 	// Accepted input types
 	INPUT_EXTS: new Set(['.jpg', '.jpeg', '.png', '.webp']),
 
-	// Responsive widths
+	// Responsive widths (requested sizes)
 	SIZES: [460, 800, 1200],
 
 	// Per-output format settings
 	FORMATS: {
-		avif: {
-			enabled: true,
-			sizes: [460, 800, 1200],
-			options: { quality: 70 }
-		},
+		// WebP for all main sizes
 		webp: {
 			enabled: true,
 			sizes: [460, 800, 1200],
 			options: { quality: 80 }
 		},
+		// Single JPEG fallback for older browsers
 		jpg: {
 			enabled: true,
-			sizes: [800], // single fallback, consistent with SIZES
+			sizes: [800],
 			options: { quality: 82, mozjpeg: true }
 		}
 	},
@@ -75,8 +60,10 @@ try {
 }
 
 // Helpers
-function sha1(buf) {
-	return crypto.createHash('sha1').update(buf).digest('hex').slice(0, 10);
+function toEncodedRelPath(rel) {
+	// Split on platform separator, encode each path segment safely
+	const segments = rel.split(path.sep).map(encodeURIComponent);
+	return segments.join('/');
 }
 
 async function* walk(dir) {
@@ -99,20 +86,53 @@ function outPath(base, width, ext) {
 	return path.join(OUT, `${name}.${width}.${ext}`);
 }
 
+// Build a cheap cache key from file size + mtime
+function makeStatKey(stat) {
+	return `${stat.size}-${stat.mtimeMs}`;
+}
+
+// Decide which sizes we actually need, based on intrinsic width
+function sizesFor(intrinsicWidth) {
+	if (!intrinsicWidth) return SIZES; // unknown: do them all
+
+	const sorted = [...SIZES].sort((a, b) => a - b);
+
+	// Only keep sizes <= intrinsic width
+	const allowed = sorted.filter((w) => w <= intrinsicWidth);
+
+	if (!allowed.length) {
+		// All requested sizes are bigger than the image;
+		// in that case, just keep the smallest as a sensible default.
+		return [sorted[0]];
+	}
+
+	return allowed;
+}
+
 // Counters
 let built = 0;
 let skipped = 0;
 
 async function processOne(file) {
 	const rel = path.relative(SRC, file);
-	const buf = await fs.readFile(file);
-	const digest = sha1(buf);
 
-	// Cache check
-	if (cache[rel] === digest) {
+	// Fast metadata check before reading entire file
+	let stat;
+	try {
+		stat = await fs.stat(file);
+	} catch (err) {
+		console.error('Cannot stat', file, err);
+		return;
+	}
+
+	const key = makeStatKey(stat);
+	if (cache[rel] === key) {
 		skipped++;
 		return;
 	}
+
+	// Now we know it changed → read the buffer
+	const buf = await fs.readFile(file);
 
 	// 1) Copy original
 	const originalOut = path.join(OUT, rel);
@@ -127,14 +147,16 @@ async function processOne(file) {
 	const width = metadata.width ?? null;
 	const height = metadata.height ?? null;
 
-	// Store as web path (serving from /uploads/)
-	// Store as URL-encoded web path (serving from /uploads/)
-const encodedRel = toEncodedRelPath(rel);
-const webPath = '/uploads/' + encodedRel;
-metaMap[webPath] = { width, height };
+	// Store intrinsic size (URL-encoded web path, serving from /uploads/)
+	const encodedRel = toEncodedRelPath(rel);
+	const webPath = '/uploads/' + encodedRel;
+	metaMap[webPath] = { width, height };
 
-	// 4) Build variants
-	for (const widthPx of SIZES) {
+	// 4) Decide which responsive widths make sense for this image
+	const effectiveSizes = sizesFor(width);
+
+	// 5) Build variants
+	for (const widthPx of effectiveSizes) {
 		for (const [ext, cfg] of Object.entries(FORMATS)) {
 			if (!cfg.enabled) continue;
 			if (!cfg.sizes.includes(widthPx)) continue;
@@ -150,8 +172,6 @@ metaMap[webPath] = { width, height };
 
 			if (ext === 'webp') {
 				await pipeline.webp(cfg.options).toFile(tmp);
-			} else if (ext === 'avif') {
-				await pipeline.avif(cfg.options).toFile(tmp);
 			} else if (ext === 'jpg' || ext === 'jpeg') {
 				await pipeline.jpeg(cfg.options).toFile(tmp);
 			} else {
@@ -162,7 +182,7 @@ metaMap[webPath] = { width, height };
 		}
 	}
 
-	cache[rel] = digest;
+	cache[rel] = key;
 	built++;
 	console.log('built:', rel);
 }
@@ -200,6 +220,7 @@ async function runWatch() {
 		if (!INPUT_EXTS.has(ext)) return;
 
 		try {
+			// Tiny delay so half-written files don't explode
 			await new Promise((r) => setTimeout(r, 100));
 			await processOne(full);
 			await saveState();

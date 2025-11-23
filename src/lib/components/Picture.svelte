@@ -21,29 +21,32 @@
 		fetchpriority = 'auto'
 	}: PictureProps = $props();
 
-	// Normalise to an encoded URL (safe if already encoded)
+	// Make sure the key matches the encoded path in image-sizes.json
 	const encodedSrc = encodeURI(src);
 
-	// metadata from image-sizes.json (which uses encoded keys)
+	// intrinsic size lookup
 	const meta =
 		(imageMeta as Record<string, { width: number; height: number } | undefined>)[encodedSrc] ??
 		null;
+
 	const width = meta?.width;
 	const height = meta?.height;
 
-	// strip extension → "/uploads/foo/bar"
+	// remove extension -> "/uploads/foo/bar"
 	const base = encodedSrc.replace(/\.[^.]+$/, '');
 
-	// srcset strings
-	const avifSrcSet = `${base}.460.avif 460w, ${base}.800.avif 800w, ${base}.1200.avif 1200w`;
-	const webpSrcSet = `${base}.460.webp 460w, ${base}.800.webp 800w, ${base}.1200.webp 1200w`;
+	// WebP variants (matching your script's output)
+	const webpSrcSet = [
+		`${base}.460.webp 460w`,
+		`${base}.800.webp 800w`,
+		`${base}.1200.webp 1200w`
+	].join(', ');
 
-	// JPG fallback (your script only generates 800px)
+	// JPEG fallback (script generates only 800px)
 	const jpgFallback = `${base}.800.jpg`;
 </script>
 
 <picture class={className}>
-	<source type="image/avif" srcset={avifSrcSet} sizes={sizes} />
 	<source type="image/webp" srcset={webpSrcSet} sizes={sizes} />
 
 	<img
