@@ -13,7 +13,14 @@
     import Menu from "$lib/icons/iconMenu.svelte"
 
   let settings = getContext('siteSettings'); 
-  
+
+  let menuClass = $state("closed");
+  menuClass = "closed";
+
+  let OpenCloseMenu = ()=> {
+   if (menuClass === "closed") {menuClass = "open"}
+   else {menuClass ="closed"}
+  }
 
 </script>
 
@@ -29,9 +36,18 @@
 <header class="bg-prime  txt-accent -p-y txt-center brd-btm ">
    <div class="page">
    <a class="txt-accent h1" href="/">{settings.siteTitle}<Skillet /></a> 
-   <button class="menu"><Menu /></button>
+   <button class="menu"  aria-label="name"   onclick = "{()=> OpenCloseMenu()}"><Menu /></button>
    </div>
 </header>  
+
+<nav class="mobile {menuClass}">
+ <ul>  
+<li><a class="txt-accent -p-lg" href="/blog" aria-current={page.url.pathname === '/blog'}> * Cooking Blog * </a></li>
+<li><a class="btn -ghost txt-accent" href="/search" aria-current={page.url.pathname === '/search'}><Search></Search>Search for Recipes!</a></li>
+<li><a class="txt-accent -p-lg" href="/pages/about-me" aria-current={page.url.pathname === '/pages/about-me'}> * About Me * </a></li>
+<li><a class="btn -ghost txt-accent" href="/pages/hire-me" aria-current={page.url.pathname === '/pages/hire-me'}>Hire Me!</a></li>
+</ul> 
+</nav>
 
 
 <nav class="desk brand-font txt-center page -p-y--sm -m-b bg-prime tags">
@@ -66,6 +82,15 @@ nav.tags a:hover {
 .desk {
     display: none;
 }
+
+.mobile {
+    display: none;
+}
+
+.mobile.open {
+    display: block;
+}
+
 
 .menu {
     position: relative;

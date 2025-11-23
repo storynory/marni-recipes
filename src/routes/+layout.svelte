@@ -5,6 +5,7 @@
 import '../app.css';
 	let { children,data } = $props();
     import Header from "$lib/components/header/header.svelte"
+     import Footer from "$lib/components/footer.svelte"
 
 	// Make settings available to all child components
 	setContext('siteSettings', data.settings);
@@ -27,6 +28,4 @@ import '../app.css';
 
 
     </div>
-<footer class="page">
-    This is the footer
-</footer>
+<Footer></Footer>

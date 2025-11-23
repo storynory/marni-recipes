@@ -1,5 +1,6 @@
 <script lang="ts">
 	  import { getContext } from 'svelte';
+      import Hero from "$lib/components/hero.svelte"
     
     import Skillet from '$lib/icons/skillet.svelte';
 	import Cake from '$lib/icons/cake.svelte';
@@ -12,10 +13,10 @@
    
 	let { data } = $props();
 
-	let settings: SiteSettings = $derived(data.settings);
-	let featuredRecipes: Recipe[] = $derived(data.featuredRecipes);
-	let allRecipes: Recipe[] = $derived(data.allRecipes);
-	let seasons: Season[] = $derived(data.seasons);
+	let settings: SiteSettings = data.settings;
+	let featuredRecipes: Recipe[] = data.featuredRecipes;
+	let allRecipes: Recipe[] = data.allRecipes;
+	let seasons: Season[] =  data.seasons;
 
 	type SectionDef = {
 		slug: string;
@@ -42,7 +43,7 @@
 
 	// ------- Season helpers (max 4) -------
 
-	const featuredSeasonSlug: string | undefined = $derived(settings.featuredSeason);
+	const featuredSeasonSlug: string | undefined = settings.featuredSeason;
 
 	const currentSeason: Season | undefined = $derived(
 		featuredSeasonSlug
@@ -68,30 +69,7 @@
 </svelte:head>
 
 <main class="page panel page">
-	<section class="grid card  -p">
-		<div class="">
-			<img
-    src={settings.portrait}
-    alt="cooking girl"
-    width="600"
-    height="600"
-    loading="eager"
-    decoding="async"
-    fetchpriority="high"
-/>		</div>
-
-		<div class="heroine-text">
-			<h1 class="txt-center">
-				<a href="/pages/about-me">Hello I'm Marni</a>
-			</h1>
-			<p class="txt-center">
-				<Skillet></Skillet>
-			</p>
-			<p class="lede txt-center max-measure brand-font">
-			{settings.siteIntro}
-			</p>
-		</div>
-	</section>
+<Hero />
 
 	<!-- 🌿 Seasonal section -->
 	{#if currentSeason}
@@ -100,8 +78,8 @@
 			<section class="home-season">
 				<header>
 					<h2 class="-p txt-center brd-tp -m-y">
-						<a href={`/recipes/seasons/${currentSeason.slug}/`}>
-							Seasonal recipes: {currentSeason.title}
+						<a href="recipes/seasons/{currentSeason.slug}">
+							{currentSeason.title} Recipes
 						</a>
 					</h2>
 				</header>
@@ -109,11 +87,11 @@
 				<ul class="grid">
 					{#each seasonList as recipe}
 						<li class="card bg-light txt-center">
-							<a href="/recipes/{recipe.slug}/">
+							<a href="/recipes/{recipe.slug}">
 								{#if recipe.thumbnail}
 									<Picture
 										src={recipe.thumbnail}
-										alt={recipe.title}
+										alt="{recipe.title} for {recipe.seasons}" 
 										sizes="(min-width: 1024px) 33vw,
 											(min-width: 640px) 50vw,
 											100vw"
@@ -127,7 +105,7 @@
 				</ul>
 
 				<div class="txt-center">
-					<a href={`/recipes/seasons/${currentSeason.slug}/`} class="btn -ghost clr-white">
+					<a href="recipes/seasons/{currentSeason.slug}" class="btn -ghost clr-white">
 						More {currentSeason.title} recipes
 					</a>
 				</div>
@@ -142,10 +120,10 @@
 	{#each sections as section}
 		{@const list = recipesFor(section.slug)}
 		{#if list.length}
-			<section class={`home-section home-section--${section.className}`}>
+			<section class="home-section home-section--{section.className}">
 				<header>
 					<h2 class="-p {section.slug} txt-center brd-tp -m-y">
-						<a href="recipes/tag/{section.slug}/" class="{section.slug}">
+						<a href="recipes/tag/{section.slug}" class="{section.slug}">
 							<span class="home-section-icon">
 								<section.Icon></section.Icon>
 							</span>
@@ -157,11 +135,11 @@
 				<ul class="grid">
 					{#each list as recipe}
 						<li class="card bg-light txt-center">
-							<a href={`/recipes/${recipe.slug}/`}>
+							<a href="recipes/{recipe.slug}">
 								{#if recipe.thumbnail}
 									<Picture
 										src={recipe.thumbnail}
-										alt={recipe.title}
+										alt="{recipe.title} for {section.label}" 
 										sizes="(min-width: 1024px) 33vw,
 											(min-width: 640px) 50vw,
 											100vw"
@@ -175,7 +153,7 @@
 				</ul>
 
 				<div class="txt-center">
-					<a href={`/recipes/tag/${section.slug}/`} class="btn -ghost clr-white">
+					<a href="recipes/tag/{section.slug}" class="btn -ghost clr-white">
 						More {section.label}
 					</a>
 				</div>
