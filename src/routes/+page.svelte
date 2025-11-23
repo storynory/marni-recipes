@@ -70,8 +70,15 @@
 <main class="page panel page">
 	<section class="grid card  -p">
 		<div class="">
-			<img src="{settings.portrait}" alt="cooking girl" width="600" height="600" />
-		</div>
+			<img
+    src={settings.portrait}
+    alt="cooking girl"
+    width="600"
+    height="600"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+/>		</div>
 
 		<div class="heroine-text">
 			<h1 class="txt-center">
