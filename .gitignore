@@ -1,5 +1,5 @@
 node_modules
-
+.image-cache.json /otherwise images won't run
 # Output
 .output
 .vercel
