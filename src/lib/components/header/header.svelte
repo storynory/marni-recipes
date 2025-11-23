@@ -12,6 +12,8 @@
     import Dessert  from "$lib/icons/fruit.svelte"
     import Menu from "$lib/icons/iconMenu.svelte"
 
+    import { afterNavigate} from '$app/navigation';
+
   let settings = getContext('siteSettings'); 
 
   let menuClass = $state("closed");
@@ -21,6 +23,13 @@
    if (menuClass === "closed") {menuClass = "open"}
    else {menuClass ="closed"}
   }
+
+	// 🔔 Close menu on every navigation
+	$effect(() => {
+		afterNavigate(() => {
+			menuClass = 'closed';
+		});
+	});
 
 </script>
 
@@ -48,12 +57,12 @@
 <li><a class="lunch" href="/recipes/tag/lunch" aria-current={page.url.pathname === '/recipes/tag/lunch'}><Lunch></Lunch>Lunch</a></li>
 <li><a class="dinner" href="/recipes/tag/dinner" aria-current={page.url.pathname === '/recipes/tag/dinner'}><Dinner></Dinner>Dinner</a></li>
 <li><a class="dessert" href="/recipes/tag/dessert" aria-current={page.url.pathname === '/recipes/tag/dessert'}><Dessert></Dessert>Dessert</a></li>
-<li><a class="txt-accent" href="/blog" aria-current={page.url.pathname === '/blog'}>✏️ Blog</a></li>
-<li><a class=" txt-accent"  href="/search" aria-current={page.url.pathname === '/search'}><Search></Search> Search for Recipes! </a></li>
-<li><a class="txt-accent" href="/pages/about-me" aria-current={page.url.pathname === '/pages/about-me'}>? About Me</a></li>
-<li><a class="txt-accent " href="/pages/hire-me" aria-current={page.url.pathname === '/pages/hire-me'}>£ Hire Me!</a></li>
+<li><a href="/blog" aria-current={page.url.pathname === '/blog'}>✏️ Blog</a></li>
+<li><a href="/search" aria-current={page.url.pathname === '/search'}><Search></Search> Search for Recipes! </a></li>
+<li><a href="/pages/about-me" aria-current={page.url.pathname === '/pages/about-me'}>? About Me</a></li>
+<li><a href="/pages/hire-me" aria-current={page.url.pathname === '/pages/hire-me'}>£ Hire Me!</a></li>
 </ul> 
-</nav>s
+</nav>
 
 
 <nav class="desk brand-font txt-center page -p-y--sm -m-b bg-prime tags">
@@ -104,12 +113,13 @@ nav.tags a:hover {
 .mobileMenu li {
     width: 100%;
       border-bottom: 1px solid var(--accent);
-    margin: 0.5em;
 }
 .mobileMenu li a {
     line-height: 2em;
-  
+    display: block;
     width: 100%;
+     background-color: ivory;
+     padding-left: 0.5em;
 }
 
 
@@ -124,6 +134,10 @@ nav.tags a:hover {
     display: block;
 }
 .menu {
+    display: none;
+}
+
+.mobile.open {
     display: none;
 }
 
