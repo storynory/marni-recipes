@@ -40,14 +40,20 @@
    </div>
 </header>  
 
-<nav class="mobile {menuClass}">
- <ul>  
-<li><a class="txt-accent -p-lg" href="/blog" aria-current={page.url.pathname === '/blog'}> * Cooking Blog * </a></li>
-<li><a class="btn -ghost txt-accent" href="/search" aria-current={page.url.pathname === '/search'}><Search></Search>Search for Recipes!</a></li>
-<li><a class="txt-accent -p-lg" href="/pages/about-me" aria-current={page.url.pathname === '/pages/about-me'}> * About Me * </a></li>
-<li><a class="btn -ghost txt-accent" href="/pages/hire-me" aria-current={page.url.pathname === '/pages/hire-me'}>Hire Me!</a></li>
+<nav class="mobile {menuClass} bg-accent txt-light page">
+ <ul class="mobileMenu">  
+<li><a class="home" href="/" aria-current={page.url.pathname === '/'}><Home/>Home</a></li>
+<li><a class="cake" href="/recipes/tag/cakes" aria-current={page.url.pathname === '/recipes/tag/cakes'}><Cake></Cake>Cakes</a></li>
+<li><a class="breakfast" href="/recipes/tag/breakfast"  aria-current={page.url.pathname === '/recipes/tag/breakfast'} ><Breakfast></Breakfast>Breakfast</a></li>
+<li><a class="lunch" href="/recipes/tag/lunch" aria-current={page.url.pathname === '/recipes/tag/lunch'}><Lunch></Lunch>Lunch</a></li>
+<li><a class="dinner" href="/recipes/tag/dinner" aria-current={page.url.pathname === '/recipes/tag/dinner'}><Dinner></Dinner>Dinner</a></li>
+<li><a class="dessert" href="/recipes/tag/dessert" aria-current={page.url.pathname === '/recipes/tag/dessert'}><Dessert></Dessert>Dessert</a></li>
+<li><a class="txt-accent" href="/blog" aria-current={page.url.pathname === '/blog'}>✏️ Blog</a></li>
+<li><a class=" txt-accent"  href="/search" aria-current={page.url.pathname === '/search'}><Search></Search> Search for Recipes! </a></li>
+<li><a class="txt-accent" href="/pages/about-me" aria-current={page.url.pathname === '/pages/about-me'}>? About Me</a></li>
+<li><a class="txt-accent " href="/pages/hire-me" aria-current={page.url.pathname === '/pages/hire-me'}>£ Hire Me!</a></li>
 </ul> 
-</nav>
+</nav>s
 
 
 <nav class="desk brand-font txt-center page -p-y--sm -m-b bg-prime tags">
@@ -89,6 +95,21 @@ nav.tags a:hover {
 
 .mobile.open {
     display: block;
+}
+
+.mobileMenu {
+    background-color: ivory;
+}
+
+.mobileMenu li {
+    width: 100%;
+      border-bottom: 1px solid var(--accent);
+    margin: 0.5em;
+}
+.mobileMenu li a {
+    line-height: 2em;
+  
+    width: 100%;
 }
 
 

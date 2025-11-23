@@ -42,11 +42,14 @@ body {
 
 /* Text colour helpers */
 
-.txt-accent {
-	color: var(--accent);
+
+
+
+.bg-accent {
+   background-color: var(--accent); 
 }
 
-.text-light,
+.txt-light,
 .txt-white {
 	color: var(--light);
 }
