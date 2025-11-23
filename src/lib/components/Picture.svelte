@@ -1,75 +1,60 @@
 <script lang="ts">
-	// AVIF/WEBP + JPG(640) responsive picture
+	import imageMeta from '$lib/image-sizes.json';
 
-		let {
-		src = '',
-		alt = '',
-		loading = 'lazy',
-		fetchPriority = 'auto',
-		class: className = '',
-		sizes
-	} = $props<{
-		src?: string;
-		alt?: string;
-		loading?: 'lazy' | 'eager';
-		fetchPriority?: 'high' | 'low' | 'auto';
-		class?: string;
+	type PictureProps = {
+		src: string;   // e.g. "/uploads/cakes/cake.jpg"
+		alt: string;
 		sizes?: string;
-	}>();
+		class?: string;
+		loading?: 'lazy' | 'eager';
+		decoding?: 'async' | 'sync' | 'auto';
+		fetchpriority?: 'high' | 'low' | 'auto';
+	};
 
-	// Strip extension: /uploads/foo.jpg → /uploads/foo
-	const base = src.replace(/\.[^.]+$/, '');
+	let {
+		src,
+		alt,
+		sizes = '100vw',
+		class: className = '',
+		loading = 'lazy',
+		decoding = 'async',
+		fetchpriority = 'auto'
+	}: PictureProps = $props();
 
-	const avifSrcset = [
-		`${base}.320.avif 320w`,
-		`${base}.640.avif 640w`,
-		`${base}.960.avif 960w`
-	].join(', ');
+	// Normalise to an encoded URL (safe if already encoded)
+	const encodedSrc = encodeURI(src);
 
-	const webpSrcset = [
-		`${base}.320.webp 320w`,
-		`${base}.640.webp 640w`,
-		`${base}.960.webp 960w`
-	].join(', ');
+	// metadata from image-sizes.json (which uses encoded keys)
+	const meta =
+		(imageMeta as Record<string, { width: number; height: number } | undefined>)[encodedSrc] ??
+		null;
+	const width = meta?.width;
+	const height = meta?.height;
 
-	// Fallback JPG (only 640 exists from your script)
-	const jpgFallback = `${base}.640.jpg`;
+	// strip extension → "/uploads/foo/bar"
+	const base = encodedSrc.replace(/\.[^.]+$/, '');
 
-	// Safe default; you can override with `sizes` prop
-	const defaultSizes =
-		'(min-width: 1200px) 25vw, (min-width: 768px) 33vw, 100vw';
+	// srcset strings
+	const avifSrcSet = `${base}.460.avif 460w, ${base}.800.avif 800w, ${base}.1200.avif 1200w`;
+	const webpSrcSet = `${base}.460.webp 460w, ${base}.800.webp 800w, ${base}.1200.webp 1200w`;
+
+	// JPG fallback (your script only generates 800px)
+	const jpgFallback = `${base}.800.jpg`;
 </script>
 
 <picture class={className}>
-	<source
-		srcset={avifSrcset}
-		sizes={sizes ?? defaultSizes}
-		type="image/avif"
-	>
-   
-	<source
-		srcset={webpSrcset}
-		sizes={sizes ?? defaultSizes}
-		type="image/webp"
-	> 
-	<img
-		class={className}
-		src={jpgFallback}
-		alt={alt}
-		loading={loading ?? undefined}
-		fetchpriority={fetchPriority}
-		decoding="async"
-		width="640"
-		height="360"
-		sizes={sizes ?? defaultSizes}
-	>
-</picture>
+	<source type="image/avif" srcset={avifSrcSet} sizes={sizes} />
+	<source type="image/webp" srcset={webpSrcSet} sizes={sizes} />
 
-<style>
-	.img-169 {
-		display: block;
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		object-fit: cover;
-	}
-</style>
+	<img
+		src={jpgFallback}
+		srcset={webpSrcSet}
+		sizes={sizes}
+		alt={alt}
+		width={width}
+		height={height}
+		loading={loading}
+		decoding={decoding}
+		fetchpriority={fetchpriority}
+	/>
+</picture>

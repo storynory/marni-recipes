@@ -1,11 +1,16 @@
 <script lang="ts">
+    // website/src/routes/+layout.svelte
 	import favicon from '$lib/assets/favicon.svg';
-  
+  import { setContext } from 'svelte';
 import '../app.css';
-	let { children } = $props();
+	let { children,data } = $props();
     import Header from "$lib/components/header/header.svelte"
 
-	
+	// Make settings available to all child components
+	setContext('siteSettings', data.settings);
+
+
+
 </script>
 
 <svelte:head>

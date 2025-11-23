@@ -1,6 +1,6 @@
 <!-- src/lib/components/TagNav.svelte -->
 <script lang="ts">
-	import type { Tag } from '$lib/server/content';
+	import type { Tag } from '$lib/server/content-bkup';
 
 	let { tags, activeSlug } = $props() as {
 		tags: Tag[];

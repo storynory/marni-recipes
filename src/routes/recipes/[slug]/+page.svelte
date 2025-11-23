@@ -1,4 +1,5 @@
 <script lang="ts">
+    // single receipt page website/src/routes/recipes/[slug]/+page.svelte
 	let { data } = $props();
 
 	let settings = data.settings;
@@ -9,7 +10,7 @@
 	<title>{recipe.title} – {settings.siteTitle}</title>
 </svelte:head>
 
-<main class="page panel">
+<main class="page panel center">
 	<article class="recipe">
 		<h1>{recipe.title}</h1>
 

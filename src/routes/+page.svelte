@@ -1,17 +1,21 @@
 <script lang="ts">
-    // front page
-	import Skillet from '$lib/icons/skillet.svelte';
+	  import { getContext } from 'svelte';
+    
+    import Skillet from '$lib/icons/skillet.svelte';
 	import Cake from '$lib/icons/cake.svelte';
 	import Breakfast from '$lib/icons/breakfast.svelte';
 	import Lunch from '$lib/icons/lunch.svelte';
 	import Dinner from '$lib/icons/dinner.svelte';
 	import Desert from '$lib/icons/fruit.svelte';
-	// adjust icon import paths to match your project
-
+	import Picture from '$lib/components/Picture.svelte';
+	import type { Recipe, Season, SiteSettings } from '$lib/server/content-bkup.js'; // adjust path
+   
 	let { data } = $props();
 
-	let settings = $derived(data.settings);
-	let featuredRecipes = $derived(data.featuredRecipes);
+	let settings: SiteSettings = $derived(data.settings);
+	let featuredRecipes: Recipe[] = $derived(data.featuredRecipes);
+	let allRecipes: Recipe[] = $derived(data.allRecipes);
+	let seasons: Season[] = $derived(data.seasons);
 
 	type SectionDef = {
 		slug: string;
@@ -20,20 +24,40 @@
 		className: string;
 	};
 
-	// Order matches your nav
 	const sections: SectionDef[] = [
 		{ slug: 'cakes', label: 'Cakes', Icon: Cake, className: 'cake' },
 		{ slug: 'breakfast', label: 'Breakfast', Icon: Breakfast, className: 'breakfast' },
 		{ slug: 'lunch', label: 'Lunch', Icon: Lunch, className: 'lunch' },
 		{ slug: 'dinner', label: 'Dinner', Icon: Dinner, className: 'dinner' },
-		// slug kept as "desert" to match your existing URLs,
-		// but label shown as "Dessert"
-		{ slug: 'desert', label: 'Dessert', Icon: Desert, className: 'dessert' }
+		{ slug: 'dessert', label: 'Dessert', Icon: Desert, className: 'dessert' } // keep slug "desert" for URLs
 	];
 
-	function recipesFor(slug: string) {
-		return featuredRecipes.filter((recipe) => recipe.tags?.includes(slug));
+	// ------- Tag helpers (max 4) -------
+
+	function recipesFor(slug: string): Recipe[] {
+		return featuredRecipes
+			.filter((recipe) => recipe.tags?.includes(slug))
+			.slice(0, 4);
 	}
+
+	// ------- Season helpers (max 4) -------
+
+	const featuredSeasonSlug: string | undefined = $derived(settings.featuredSeason);
+
+	const currentSeason: Season | undefined = $derived(
+		featuredSeasonSlug
+			? seasons.find((s) => s.slug === featuredSeasonSlug)
+			: undefined
+	);
+
+	function recipesForSeason(slug: string): Recipe[] {
+		// Use allRecipes so seasonal pull-out isn’t limited
+		return allRecipes
+			.filter((recipe) => recipe.seasons?.includes(slug))
+			.slice(0, 4);
+	}
+
+    let setttings = getContext('settings')
 </script>
 
 <svelte:head>
@@ -44,72 +68,111 @@
 </svelte:head>
 
 <main class="page panel page">
-	<section class="grid  -p">
-		<div class="heroine-image">
-			<img
-				src="/cooking-girl-left.jpg"
-				alt="cooking girl"
-                />
-	
+	<section class="grid card  -p">
+		<div class="">
+			<img src="{settings.portrait}" alt="cooking girl" width="600" height="600" />
 		</div>
 
-		<div class="hero-text">
+		<div class="heroine-text">
 			<h1 class="txt-center">
-				<a href="/">Hello I'm Marni</a>
+				<a href="/pages/about-me">Hello I'm Marni</a>
 			</h1>
 			<p class="txt-center">
 				<Skillet></Skillet>
 			</p>
 			<p class="lede txt-center max-measure brand-font">
-				There will be a picture of me here and an intro saying that you 
-				can use my recipes and if you live near Oxford I can bake you a cake, 
-				cook for your dinner party, or cater for your special event.
-				Catch me on Tik Tok.
+			{settings.siteIntro}
 			</p>
 		</div>
 	</section>
 
-	<!-- Tag sections in same order as nav -->
-	{#each sections as section}
-		{@const list = recipesFor(section.slug)}
-		{#if list.length}
-		
+	<!-- 🌿 Seasonal section -->
+	{#if currentSeason}
+		{@const seasonList = recipesForSeason(currentSeason.slug)}
+		{#if seasonList.length}
+			<section class="home-season">
 				<header>
 					<h2 class="-p txt-center brd-tp -m-y">
-						<a href={`/recipes/tag/${section.slug}/`}>
-							<span class="home-section-icon">
-								<section.Icon></section.Icon>
-							</span>
-							{section.label}
+						<a href={`/recipes/seasons/${currentSeason.slug}/`}>
+							Seasonal recipes: {currentSeason.title}
 						</a>
 					</h2>
-
-					
 				</header>
 
 				<ul class="grid">
-					{#each list as recipe}
+					{#each seasonList as recipe}
 						<li class="card bg-light txt-center">
-							<a href="/recipes{recipe.slug}/">
+							<a href="/recipes/{recipe.slug}/">
 								{#if recipe.thumbnail}
-									<img
+									<Picture
 										src={recipe.thumbnail}
 										alt={recipe.title}
-										width="620"
-										height="320"
-									>
+										sizes="(min-width: 1024px) 33vw,
+											(min-width: 640px) 50vw,
+											100vw"
+										class="card-image"
+									></Picture>
 								{/if}
 								<h3 class="txt-accent">{recipe.title}</h3>
 							</a>
 						</li>
 					{/each}
 				</ul>
-               <div class="txt-center">
-				<a href={`/recipes/tag/${section.slug}/`} class="btn -ghost  clr-white">
-							More {section.label}
+
+				<div class="txt-center">
+					<a href={`/recipes/seasons/${currentSeason.slug}/`} class="btn -ghost clr-white">
+						More {currentSeason.title} recipes
+					</a>
+				</div>
+			</section>
+		{:else}
+			<!-- Optional: debug text while you’re wiring it up -->
+			<!-- <p class="txt-center">No recipes found for {currentSeason.slug}</p> -->
+		{/if}
+	{/if}
+
+	<!-- Tag sections in same order as nav -->
+	{#each sections as section}
+		{@const list = recipesFor(section.slug)}
+		{#if list.length}
+			<section class={`home-section home-section--${section.className}`}>
+				<header>
+					<h2 class="-p {section.slug} txt-center brd-tp -m-y">
+						<a href="recipes/tag/{section.slug}/" class="{section.slug}">
+							<span class="home-section-icon">
+								<section.Icon></section.Icon>
+							</span>
+							{section.label}
 						</a>
-                        </div>
+					</h2>
+				</header>
+
+				<ul class="grid">
+					{#each list as recipe}
+						<li class="card bg-light txt-center">
+							<a href={`/recipes/${recipe.slug}/`}>
+								{#if recipe.thumbnail}
+									<Picture
+										src={recipe.thumbnail}
+										alt={recipe.title}
+										sizes="(min-width: 1024px) 33vw,
+											(min-width: 640px) 50vw,
+											100vw"
+										class="card-image"
+									></Picture>
+								{/if}
+								<h3 class="txt-accent">{recipe.title}</h3>
+							</a>
+						</li>
+					{/each}
+				</ul>
+
+				<div class="txt-center">
+					<a href={`/recipes/tag/${section.slug}/`} class="btn -ghost clr-white">
+						More {section.label}
+					</a>
+				</div>
+			</section>
 		{/if}
 	{/each}
 </main>
-

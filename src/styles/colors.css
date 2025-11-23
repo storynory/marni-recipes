@@ -1,13 +1,23 @@
 :root {
 	/* Warm earthy palette for Marni */
 	--prime:      #E3D2B7; /* warm biscuit background */
-	--accent:     #8C4B2E; /* chestnut / clay */
-    --accent:     #00634e; /* chestnut / clay */
+	--clay:     #8C4B2E; /* chestnut / clay */
+    --accent:     #00634e; 
 	--light:      #F4E8D7; /* soft cream */
 	--frog-dark:  #00634e; /* deep green – for strong contrast areas */
 	--gray-light: #f8f9fa;
 
 	--text-main:  #333333; /* default text */
+
+
+/* 🔹 Nav tag colours – all high contrast on #E3D2B7 */
+	--nav-home:      var(--frog-dark); /* deep green */
+	--nav-cake:      #B3433B;          /* raspberry / red velvet */
+	--nav-breakfast: #A86A10;          /* honey toast */
+	--nav-lunch:     #4C6B3C;          /* herby olive */
+	--nav-dinner:    #5B3B73;          /* aubergine */
+	--nav-dessert:   #C25B1A;          /* baked orange / caramel */
+
 }
 
 body {
@@ -83,6 +93,68 @@ a:hover {
 .brd-btm {
     border-bottom: 1px solid var(--accent);
 }
+
+/***********************
+icon colors 
+************************/
+
+.icon.home {
+    fill: var(--accent)
+}
+
+.home {
+    color: var(--accent)
+}
+
+.coffee {
+    color: brown;
+}
+
+.icon.coffee {
+    fill: brown;
+}
+.icon.cakes {
+    fill: var(--nav-cake);
+}
+.cakes {
+    color: var(--nav-cake);
+}
+
+
+
+.icon.lunch {
+    fill: var(--nav-lunch);
+}
+
+.lunch {
+    color:var(--nav-lunch);
+}
+
+
+.icon.breakfast {
+    fill: var(--nav-breakfast);
+}
+
+.breakfast {
+    color:  var(--nav-breakfast);
+}
+
+.icon.dinner {
+    fill:  var(--nav-dinner);
+}
+
+.dinner {
+    color:  var(--nav-dinner);
+}
+
+.icon.dessert {
+    fill:  var(--nav-dessert);
+}
+
+.dessert {
+    color:  var(--nav-dessert);
+}
+
 
 /******************************************
 

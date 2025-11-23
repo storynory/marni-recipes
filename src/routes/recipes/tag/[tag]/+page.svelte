@@ -25,7 +25,7 @@
 	<!-- <TagNav tags={tags} activeSlug={tagSlug}></TagNav> -->
 
 	<header class="tag-header -p">
-		<h1 class="brand-font">
+		<h1 class="brand-font {tag.slug}">
 			{tag.title}
 		</h1>
 
@@ -40,7 +40,7 @@
 		<ul class="grid recipe-grid">
 			{#each recipes as recipe}
 				<li class="card recipe-card">
-					<a href={`/recipes/${recipe.slug}/`} class="card-link">
+					<a href="/recipes/{recipe.slug}/" class="card-link">
 						{#if recipe.thumbnail}
 							<img
 								src={recipe.thumbnail}
@@ -51,7 +51,7 @@
 							>
 						{/if}
 
-						<h2 class="card-title brand-font">{recipe.title}</h2>
+						<h2 class="card-title brand-font txt-accent">{recipe.title}</h2>
 
 						{#if recipe.date}
 							<p class="card-meta small">

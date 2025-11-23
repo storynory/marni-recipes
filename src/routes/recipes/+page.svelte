@@ -1,33 +1,31 @@
 <script lang="ts">
-	import { getTagBySlug } from '$lib/server/content.js';
+	//routes/recipes/+page.svelte
+    
+    import RecipeSection from '$lib/components/RecipeSection.svelte';
 
 	let { data } = $props();
 
-	let settings = data.settings;
-	let recipes = data.recipes; // plural
+	let settings = $derived(data.settings);
+	let recipes = $derived(data.recipes);
 </script>
 
 <svelte:head>
-	<title>Recipes – {settings.siteTitle}</title>
+	<title>All Marni's Recipes</title>
+	{#if settings.strapline}
+		<meta name="description" content="All Marni's Recipes, from Breakfast to midnight" />
+	{/if}
 </svelte:head>
 
-<main class="page">
-	<h1>All recipes</h1>
+<main class="page panel">
+	<section class="-p txt-center">
+		<h1>All Recipes</h1>
+	</section>
 
-	
-		{#each recipes as rep}
-       
-        <ul class="recipe-grid">
-			<li class="recipe-card">
-				<a href={`/recipes/{rep.slug}/`}>
-					{#if rep.thumbnail}
-						<img src={rep.thumbnail} alt={rep.title}/>
-					{/if}
-					<h2>{rep.title}</h2>
-				</a>
-			</li>
-            </ul>
-         
-		{/each}
-	
+	<RecipeSection
+		label="All Recipes"
+		slug="all"
+		recipes={recipes}
+		moreHrefBase="/recipes"
+        showMore={false}
+	></RecipeSection>
 </main>

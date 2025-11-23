@@ -19,12 +19,13 @@
 
 .-ghost {
 	background-color: transparent;
-	border: 1px solid gray;
-	color: #333;
+	border: 1px solid var(--accent);
+	color: var(--accent);
 }
 
 .btn.-ghost:hover {
-	background-color: salmon;
+	background-color: var(--prime);
+    color: var(--nav-dessert);
 }
 
 a.btn:hover {
