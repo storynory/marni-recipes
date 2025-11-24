@@ -5,8 +5,14 @@
 
 	let { data } = $props();
 
-	let settings = $derived(data.settings);
-	let recipes = $derived(data.recipes);
+	let settings = data.settings;
+	let recipes = $state(data.recipes);
+
+let sorted = $derived(recipes.slice().sort((a, b) =>
+		a.title.localeCompare(b.title)
+	));
+
+
 </script>
 
 <svelte:head>
@@ -21,11 +27,14 @@
 		<h1>All Recipes</h1>
 	</section>
 
-	<RecipeSection
-		label="All Recipes"
-		slug="all"
-		recipes={recipes}
-		moreHrefBase="/recipes"
-        showMore={false}
-	></RecipeSection>
+	{#each sorted as recipe}
+    <ul> 
+    <li class="card">
+        <a class="--full" href="/recipes/{recipe.slug}">{recipe.title}</a>  
+    </li>
+    </ul>
+    {/each}
+
+
+
 </main>

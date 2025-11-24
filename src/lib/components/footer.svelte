@@ -1,3 +1,3 @@
-<footer class="txt-accent">
-    This is a footer
+<footer class="txt-accent bg-prime">
+    <a href="/recipes">All Recipes</a>
 </footer>
