@@ -38,9 +38,6 @@
 		margin: 0;
 	}
 
-	.tags-nav-item {
-	}
-
 	.tags-nav-link {
 		display: inline-block;
 		padding: 0.25rem 0.75rem;

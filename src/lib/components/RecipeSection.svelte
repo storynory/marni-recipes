@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Picture from "./Picture.svelte";
+
 	type RecipeCard = {
 		slug: string;
 		title: string;
@@ -38,12 +40,12 @@
 				<li class="card bg-light txt-center">
 					<a href={`/recipes/${recipe.slug}/`}>
 						{#if recipe.thumbnail}
-							<img
+							<Picture
 								src={recipe.thumbnail}
 								alt={recipe.title}
 								width="620"
 								height="320"
-							>
+							/>
 						{/if}
 						<h3 class="txt-accent">{recipe.title}</h3>
 					</a>

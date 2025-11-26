@@ -9,14 +9,14 @@
 <svelte:head>
 	<title>Blog – {settings.siteTitle}</title>
 	
-		<meta name="description" content="Diary of a girl who loves to bake and cook" />
+		<meta name="description" content={settings.BlogPageintro} />
 
 </svelte:head>
 
 <main class="page panel">
 	<section class="-p txt-center">
 		<h1>Blog</h1>
-		<p class="lede">Kitchen stories, baking notes, and behind-the-scenes bits.</p>
+		<p class="lede">{settings.BlogPageintro}</p>
 	</section>
 
 	{#if posts.length === 0}

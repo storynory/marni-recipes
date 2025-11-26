@@ -10,6 +10,7 @@ export type Recipe = {
 	title: string;
 	date?: string;
 	thumbnail?: string;
+	excerpt?: string; // 👈 new
 	body?: string;
 	html?: string;
 
@@ -58,6 +59,7 @@ export function getAllRecipes(): Recipe[] {
 			title: (data.title as string) ?? slug,
 			date: data.date as string | undefined,
 			thumbnail: data.thumbnail as string | undefined,
+			excerpt: data.excerpt as string | undefined, // 👈 read from front matter
 			body: content,
 			html,
 			ingredients,
@@ -107,6 +109,7 @@ export function getRecipeBySlug(slug: string): Recipe | null {
 		title: (data.title as string) ?? slug,
 		date: data.date as string | undefined,
 		thumbnail: data.thumbnail as string | undefined,
+		excerpt: data.excerpt as string | undefined, // 👈 here too
 		body: content,
 		html,
 		ingredients,

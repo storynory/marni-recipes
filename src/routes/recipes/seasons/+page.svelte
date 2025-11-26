@@ -10,7 +10,7 @@
 <svelte:head>
 	<title>Seasonal recipes – {settings.siteTitle}</title>
 	{#if settings.strapline}
-		<meta name="description" content={settings.strapline} />
+		<meta name="description" content="Browse My recipes by Season" />
 	{/if}
 </svelte:head>
 

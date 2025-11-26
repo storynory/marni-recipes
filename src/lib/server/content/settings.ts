@@ -18,7 +18,8 @@ export type SiteSettings = {
 	// path to hero portrait image
 	portrait?: string;
 
-	// slug of featured season, e.g. "christmas" or "easter"
+BlogPageintro?: string;	
+  // slug of featured season, e.g. "christmas" or "easter"
 	featuredSeason?: string;
 };
 
@@ -33,8 +34,10 @@ export function getSiteSettings(): SiteSettings {
 			siteTagline: '',
 			siteIntro: '',
 			portrait: '',
-			featuredSeason: ''
-		};
+			featuredSeason: '',
+      BlogPageintro: 'Diary of a girl who loves to cook and bake'
+		
+    };
 	}
 
 	const { data } = readMarkdownFile(filePath);
@@ -50,6 +53,7 @@ export function getSiteSettings(): SiteSettings {
 		siteTagline: tagline,
 		siteIntro: data.siteIntro as string | undefined,
 		portrait: data.portrait as string | undefined,
-		featuredSeason: data.featuredSeason as string | undefined
+		featuredSeason: data.featuredSeason as string | undefined,
+    BlogPageintro: data.BlogPageintro as string ?? "diary of  girl who loves to cook"
 	};
 }
