@@ -1,0 +1,17 @@
+name: Deploy Marni site (website changes)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ping-deploy-hook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call deploy hook
+        run: |
+          curl -X POST "https://marni.hughfraser.co.uk/deploy-hook" \
+            -H "Content-Type: application/json" \
+            -H "X-Deploy-Token: ${{ secrets.DEPLOY_TOKEN }}" \
+            -d '{"site":"marni"}'
+
