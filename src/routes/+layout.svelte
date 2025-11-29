@@ -8,7 +8,6 @@ import '../app.css';
      import Footer from "$lib/components/footer.svelte"
 	// Make settings available to all child components
 	setContext('siteSettings', data.settings);
-console.log("settings in layout", data.settings)
 let font = data.settings.fontFamily;
 
 </script>
@@ -16,7 +15,49 @@ let font = data.settings.fontFamily;
 <svelte:head>
 	<link rel="icon" href={favicon} />
 <style>
-   
+
+@font-face {
+  font-family: 'Baloo 2';
+  src: url('/fonts/Baloo2/Baloo2-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('/fonts/Comfortaa/Comfortaa-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces/Fraunces-latin-basic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url('/fonts/Quicksand/Quicksand-Bold-latin.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Varela Round';
+  src: url('/fonts/VarelaRound/VarelaRound-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 @font-face {
   font-family: "Delius";
   src: url("/fonts/Delius/Delius-Regular.woff2") format("woff2");
