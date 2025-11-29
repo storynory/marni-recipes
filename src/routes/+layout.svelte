@@ -19,7 +19,7 @@ let font = data.settings.fontFamily;
    
 @font-face {
   font-family: "Delius";
-  src: url("/fonts/Delius/Delius:-Regular.woff2") format("woff2");
+  src: url("/fonts/Delius/Delius-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 600;          /* important for consistent matching */
   font-display: fallback;        /* or `optional` – see below */
