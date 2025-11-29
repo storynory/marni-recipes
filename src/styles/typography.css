@@ -1,60 +1,4 @@
 /* -----------------------------------------------------------------
-   3. Root variables: stacks + scale system
-   ----------------------------------------------------------------- */
-:root {
-  /* Body font stack */
-  --font-body: system-ui, -apple-system, "Segoe UI",
-    Roboto, "Noto Sans", "Liberation Sans", "Helvetica Neue", Arial,
-    sans-serif;
-  --font-fraunces: "Fraunces", "Georgia", "Palatino Linotype",
-                   "Book Antiqua", "Times New Roman", serif;
-
---font-quicksand: "Quicksand", system-ui, -apple-system, BlinkMacSystemFont,
-                    "Segoe UI", "Roboto", "Noto Sans",
-                    "Helvetica Neue", Arial, sans-serif;
-               
-
-
-
-
-
-  /* Core typography */
-  /* ~17px body equivalent (on top of html: 100%) */
-  --base-font-size:calc(100% * (16.5 / 16));
-  --font-scale:  1.2;        
-  --line-height-ratio: 1.6; /* airy for long-form reading */
-
-  /* Modular scale (all based off base font size) */
-  --scale-1: calc(var(--base-font-size) * var(--font-scale));   /* ~27px */
-  --scale-2: calc(var(--scale-1) * var(--font-scale));          /* ~43px */
-  --scale-3: calc(var(--scale-2) * var(--font-scale));
-  --scale-4: calc(var(--scale-3) * var(--font-scale));
-
-  /* In-between steps for fine control */
-  --scale-1-x: calc(var(--base-font-size) * 1.2); /* between body and h2 */
-  --scale-1-5: calc(var(--base-font-size) * 1.5); /* larger pull-quotes */
-}
-
-
-
-
-
-
-@font-face {
-  font-family: "Fraunces";
-  src: url("/fonts/Fraunces/Fraunces-latin-basic.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;          /* important for consistent matching */
-  font-display: fallback;        /* or `optional` – see below */
-  unicode-range: U+0000-00FF;
-}
-
-
-
-
-
-
-/* -----------------------------------------------------------------
    4. Base sizing (mobile-first)
    ----------------------------------------------------------------- */
 html {
@@ -86,16 +30,6 @@ p.small  {
 
 /* Headings
    ----------------------------------------------------------------- */
-h1,
-h2,
-h3,
-h4,
-.h1,
-.brand-font {
-  font-family: var(--font-fraunces);
- 
-}
-
 .lede,
 .p-lg {
   font-size: 1em; 

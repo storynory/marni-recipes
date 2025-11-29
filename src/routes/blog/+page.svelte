@@ -2,8 +2,9 @@
     /// src/routes/blog/+page.svelte
 	let { data } = $props();
 
-	let settings = $derived(data.settings);
-	let posts = $derived(data.posts);
+	let settings = data.settings;
+    console.log(settings);
+    let posts = data.posts;
 </script>
 
 <svelte:head>
