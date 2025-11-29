@@ -56,6 +56,6 @@ export function getSiteSettings(): SiteSettings {
 		portrait: data.portrait as string | undefined,
 		featuredSeason: data.featuredSeason as string | undefined,
    BlogPageintro: data.BlogPageintro as string ?? "diary of  girl who loves to cook",
-    fontFamily: data.fontFamily as string ?? "Fraunces"
+    fontFamily: data.fontFamily as string ?? "Comfortaa"
 	};
 }

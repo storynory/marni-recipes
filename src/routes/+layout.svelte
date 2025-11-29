@@ -9,13 +9,14 @@ import '../app.css';
 	// Make settings available to all child components
 	setContext('siteSettings', data.settings);
 
+let font = data.settings.fontFamily;
 
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 <style>
-
+   
 @font-face {
   font-family: "Delius";
   src: url("/fonts/Delius/Delius:-Regular.woff2") format("woff2");
@@ -26,39 +27,19 @@ import '../app.css';
 }
 
 
-@font-face {
-  font-family: "Fraunces";
-  src: url("/fonts/Fraunces/Fraunces-latin-basic.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;          /* important for consistent matching */
-  font-display: fallback;        /* or `optional` – see below */
-  unicode-range: U+0000-00FF;
-}
-
-@font-face {
-  font-family: "Quicksand";
-  src: url("/fonts/Quicksand/Quicksand-Bold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;          /* important for consistent matching */
-  font-display: fallback;        /* or `optional` – see below */
-  unicode-range: U+0000-00FF;
-}
- 
-
-
 h1,
 h2,
 h3,
 h4,
 .h1,
 .brand-font {
-  font-family:"{data.settings.fontFamily}, sans-serif";
+  font-family: var(--font), sans-serif;
 }
-
-
 </style>
-</svelte:head>
-
+i</svelte:head>
+<div 
+  style ="--font:{font};"
+>
 <Header />
  
  <div class="page">
@@ -69,6 +50,7 @@ h4,
 
 
     </div>
+</div>
 <Footer></Footer>
 
 
