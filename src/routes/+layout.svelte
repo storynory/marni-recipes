@@ -8,7 +8,7 @@ import '../app.css';
      import Footer from "$lib/components/footer.svelte"
 	// Make settings available to all child components
 	setContext('siteSettings', data.settings);
-
+console.log("settings in layout", data.settings)
 let font = data.settings.fontFamily;
 
 </script>

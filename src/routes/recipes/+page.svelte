@@ -23,9 +23,10 @@ let sorted = $derived(recipes.slice().sort((a, b) =>
 </svelte:head>
 
 <main class="page panel">
-	<section class="-p txt-center">
+	<header class="-p txt-center">
 		<h1>All Recipes</h1>
-	</section>
+   {settings.recipesPageIntro}
+	</header>
 
 	{#each sorted as recipe}
     <ul> 

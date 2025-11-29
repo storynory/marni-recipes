@@ -12,33 +12,42 @@ export type SiteSettings = {
 	// new explicit name from YAML (siteTagline)
 	siteTagline?: string;
 
-	// hero intro text
+	// optional hero title and intro text
+	siteIntroTitle?: string;
 	siteIntro?: string;
+
+	// page intros from YAML
+	blogPageIntro?: string;
+	seasonsPageIntro?: string;
+	recipesPageIntro?: string;
 
 	// path to hero portrait image
 	portrait?: string;
-BlogPageintro?: string;	
-  // slug of featured season, e.g. "christmas" or "easter"
+
+	// slug of featured season, e.g. "christmas" or "easter"
 	featuredSeason?: string;
 
-fontFamily?: string;
+	fontFamily?: string;
 };
 
 export function getSiteSettings(): SiteSettings {
 	const filePath = path.join(CONTENT_ROOT, 'settings', 'site.md');
 
 	if (!fs.existsSync(filePath)) {
-		// sensible defaults
+		// sensible defaults if settings file is missing
 		return {
 			siteTitle: 'Marni’s Cooking Website',
 			strapline: '',
 			siteTagline: '',
+			siteIntroTitle: '',
 			siteIntro: '',
+			blogPageIntro: 'Diary of a girl who loves to cook and bake',
+			seasonsPageIntro: '',
+			recipesPageIntro: '',
 			portrait: '',
 			featuredSeason: '',
-      BlogPageintro: 'Diary of a girl who loves to cook and bake',
-		  fontFamily: "",   
-    };
+			fontFamily: 'Comfortaa'
+		};
 	}
 
 	const { data } = readMarkdownFile(filePath);
@@ -50,12 +59,26 @@ export function getSiteSettings(): SiteSettings {
 
 	return {
 		siteTitle: (data.siteTitle as string) ?? 'Marni’s Cooking Website',
-		strapline: tagline,
+
+		// keep old "strapline" for backwards compatibility
+		strapline: (data.strapline as string | undefined) ?? tagline,
+
+		// canonical name going forward
 		siteTagline: tagline,
+
+		siteIntroTitle: data.siteIntroTitle as string | undefined,
 		siteIntro: data.siteIntro as string | undefined,
+
+		blogPageIntro:
+			(data.blogPageIntro as string | undefined) ??
+			'Diary of a girl who loves to cook and bake',
+
+		seasonsPageIntro: data.seasonsPageIntro as string | undefined,
+		recipesPageIntro: data.recipesPageIntro as string | undefined,
+
 		portrait: data.portrait as string | undefined,
 		featuredSeason: data.featuredSeason as string | undefined,
-   BlogPageintro: data.BlogPageintro as string ?? "diary of  girl who loves to cook",
-    fontFamily: data.fontFamily as string ?? "Comfortaa"
+		fontFamily: (data.fontFamily as string | undefined) ?? 'Comfortaa'
 	};
 }
+

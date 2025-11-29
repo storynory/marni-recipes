@@ -3,22 +3,22 @@
 	let { data } = $props();
 
 	let settings = data.settings;
-    console.log(settings);
+    console.log("blog page",settings);
     let posts = data.posts;
 </script>
 
 <svelte:head>
 	<title>Blog – {settings.siteTitle}</title>
 	
-		<meta name="description" content={settings.BlogPageintro} />
+		<meta name="description" content={settings.blogPageIntro} />
 
 </svelte:head>
 
 <main class="page panel">
-	<section class="-p txt-center">
+	<header class="-p txt-center">
 		<h1>Blog</h1>
-		<p class="lede">{settings.BlogPageintro}</p>
-	</section>
+		<p class="lede">Hello {settings.blogPageIntro}</p>
+	</header>
 
 	{#if posts.length === 0}
 		<section class="-p">
