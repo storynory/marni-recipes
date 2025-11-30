@@ -9,12 +9,20 @@
 	// Make settings available to all child components
 	setContext('siteSettings', data.settings);
   let font = data.settings.fontFamily;
+const defaultColours = {
+	prime: "#e3d2b7",
+	accent: "#00634e",
+	second: "#f4e8d7",
+	gray: "#f8f9fa",
+	text: "#333333"
+};
 
-	let prime = "#E3D2B7"; /* warm biscuit background */
-	let clay = "#8C4B2E"; /* chestnut / clay */
-  let accent = "#00634e"; 
-	let light = "#F4E8D7"; /*soft cream */
-  let text = "#333333" 
+  let colors = data.settings.activeColourScheme ?? defaultColours;
+
+  let prime = colors.prime; /* warm biscuit background */
+  let accent = colors.accent; 
+	let light = colors.second; /*soft cream */
+  let text = colors.text
  </script>
 
 <svelte:head>
@@ -99,7 +107,6 @@
 
 body {
   color: var(--text);
-  background-color: var(--lite);
 }
 
 
@@ -135,9 +142,7 @@ border-top: 1px solid var(--accent)
   --font:{font}; 
   --prime:{prime};
   --accent:{accent};
-  --lite:{light}; 
   --light:{light};
-  --clay:{clay};
   --text:{text};
 
     --gray-light: #f8f9fa;

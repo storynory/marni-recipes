@@ -3,6 +3,16 @@ import fs from 'fs';
 import path from 'path';
 import { CONTENT_ROOT, readMarkdownFile } from './core';
 
+export type ColourScheme = {
+	slug: string;
+	title: string;
+	prime: string;
+	accent: string;
+	second: string;
+	gray: string;
+	text: string;
+};
+
 export type SiteSettings = {
 	siteTitle: string;
 
@@ -12,73 +22,90 @@ export type SiteSettings = {
 	// new explicit name from YAML (siteTagline)
 	siteTagline?: string;
 
-	// optional hero title and intro text
-	siteIntroTitle?: string;
+	// hero intro text
 	siteIntro?: string;
-
-	// page intros from YAML
-	blogPageIntro?: string;
-	seasonsPageIntro?: string;
-	recipesPageIntro?: string;
 
 	// path to hero portrait image
 	portrait?: string;
-
-	// slug of featured season, e.g. "christmas" or "easter"
+  blogPageIntro?: string;	
+  // slug of featured season, e.g. "christmas" or "easter"
 	featuredSeason?: string;
-
-	fontFamily?: string;
+recipesPageIntro: "",
+fontFamily?: string;
+activeColourScheme?: ColourScheme | null;
 };
 
 export function getSiteSettings(): SiteSettings {
 	const filePath = path.join(CONTENT_ROOT, 'settings', 'site.md');
 
-	if (!fs.existsSync(filePath)) {
-		// sensible defaults if settings file is missing
-		return {
-			siteTitle: 'Marni’s Cooking Website',
-			strapline: '',
-			siteTagline: '',
-			siteIntroTitle: '',
-			siteIntro: '',
-			blogPageIntro: 'Diary of a girl who loves to cook and bake',
-			seasonsPageIntro: '',
-			recipesPageIntro: '',
-			portrait: '',
-			featuredSeason: '',
-			fontFamily: 'Comfortaa'
-		};
+	// --------------------------------
+	// Load main settings
+	// --------------------------------
+	let data: any = {};
+	if (fs.existsSync(filePath)) {
+		data = readMarkdownFile(filePath).data ?? {};
 	}
-
-	const { data } = readMarkdownFile(filePath);
 
 	const tagline =
 		(data.siteTagline as string | undefined) ??
 		(data.strapline as string | undefined) ??
 		'';
 
+	// --------------------------------
+	// Load colour schemes (simple)
+	// --------------------------------
+	const schemesFolder = path.join(CONTENT_ROOT, 'colour-schemes');
+	let schemes: ColourScheme[] = [];
+
+	if (fs.existsSync(schemesFolder)) {
+		for (const file of fs.readdirSync(schemesFolder)) {
+			if (!file.endsWith('.md')) continue;
+
+			const full = path.join(schemesFolder, file);
+			const { data: scheme } = readMarkdownFile(full);
+			const slug = file.replace(/\.md$/, '');
+
+			schemes.push({
+				slug,
+				title: scheme.title,
+				prime: scheme.prime,
+				accent: scheme.accent,
+				second: scheme.second,
+				gray: scheme.gray,
+				text: scheme.text
+			});
+		}
+	}
+
+	const activeSlug = data.main?.activeScheme as string | undefined;
+	const activeColour = activeSlug
+		? schemes.find((s) => s.slug === activeSlug) ?? null
+		: null;
+
+	// --------------------------------
+	// Return settings
+	// --------------------------------
 	return {
-		siteTitle: (data.siteTitle as string) ?? 'Marni’s Cooking Website',
+		siteTitle: data.siteTitle ?? 'Marni’s Cooking Website',
 
-		// keep old "strapline" for backwards compatibility
-		strapline: (data.strapline as string | undefined) ?? tagline,
-
-		// canonical name going forward
+		strapline: data.strapline ?? tagline,
 		siteTagline: tagline,
 
-		siteIntroTitle: data.siteIntroTitle as string | undefined,
-		siteIntro: data.siteIntro as string | undefined,
+		siteIntroTitle: data.siteIntroTitle,
+		siteIntro: data.siteIntro,
 
 		blogPageIntro:
-			(data.blogPageIntro as string | undefined) ??
+			data.blogPageIntro ??
 			'Diary of a girl who loves to cook and bake',
 
-		seasonsPageIntro: data.seasonsPageIntro as string | undefined,
-		recipesPageIntro: data.recipesPageIntro as string | undefined,
+		seasonsPageIntro: data.seasonsPageIntro,
+		recipesPageIntro: data.recipesPageIntro,
 
-		portrait: data.portrait as string | undefined,
-		featuredSeason: data.featuredSeason as string | undefined,
-		fontFamily: (data.fontFamily as string | undefined) ?? 'Comfortaa'
+		portrait: data.portrait,
+		featuredSeason: data.featuredSeason,
+		fontFamily: data.fontFamily ?? 'Comfortaa',
+
+		activeColourScheme: activeColour
 	};
 }
 
