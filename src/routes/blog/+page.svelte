@@ -17,7 +17,7 @@
 <main class="page panel">
 	<header class="-p txt-center">
 		<h1>Blog</h1>
-		<p class="lede">Hello {settings.blogPageIntro}</p>
+		<p class="lede">{settings.blogPageIntro}</p>
 	</header>
 
 	{#if posts.length === 0}

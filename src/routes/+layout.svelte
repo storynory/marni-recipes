@@ -4,17 +4,46 @@
   import { setContext } from 'svelte';
   import '../app.css';
 	let { children,data } = $props();
-    import Header from "$lib/components/header/header.svelte"
-     import Footer from "$lib/components/footer.svelte"
+  import Header from "$lib/components/header/header.svelte"
+  import Footer from "$lib/components/footer.svelte"
 	// Make settings available to all child components
 	setContext('siteSettings', data.settings);
-let font = data.settings.fontFamily;
+  let font = data.settings.fontFamily;
 
-</script>
+	let prime = "#E3D2B7"; /* warm biscuit background */
+	let clay = "#8C4B2E"; /* chestnut / clay */
+  let accent = "#00634e"; 
+	let light = "#F4E8D7"; /* soft cream */
+  let text = "#333333" 
+ </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 <style>
+.bg-prime {
+  background: --var(prime);
+}
+.bg-accent{
+  background:--var(accent);
+}
+.bg-light {
+  background:--var(light);
+}
+.bg-clay {
+  background: --var(clay);
+}
+.txt-prime {
+  background: --var(prime);
+}
+.txt-accent{
+  background:--var(accent);
+}
+.txt-light {
+  background:--var(light);
+}
+.txt-clay {
+  background: --var(clay);
+}
 
 @font-face {
   font-family: 'Baloo 2';
@@ -74,23 +103,48 @@ h3,
 h4,
 .h1,
 .brand-font {
+  color: var(--text);
   font-family: var(--font), sans-serif;
 }
-</style>
+a,
+a:hover,  
+.brand-font {
+  color:var(--text);
+}
+
+body {
+  color: var(--text);
+  background: var(--light); 
+}
+
+.brd-tp {
+border-top: 1px solid var(accent)
+}
+
+.brd-bottom {
+  border-bottom: 1px solid var(accent);
+}
+
+
+
+  </style>
 i</svelte:head>
-<div 
-  style ="--font:{font};"
->
+<div  style ="
+  --font:{font}; 
+  --prime:{prime};
+  --accent:{accent};
+  --light:{light};
+  --clay:{clay};
+  --text:{text};
+  "
+   >
 <Header />
  
  <div class="page">
            <main class="bg-light">
                 {@render children()}
-
              </main>
-
-
-    </div>
+ </div>
 </div>
 <Footer></Footer>
 
