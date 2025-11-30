@@ -13,37 +13,14 @@
 	let prime = "#E3D2B7"; /* warm biscuit background */
 	let clay = "#8C4B2E"; /* chestnut / clay */
   let accent = "#00634e"; 
-	let light = "#F4E8D7"; /* soft cream */
+	let light = "#F4E8D7"; /*soft cream */
   let text = "#333333" 
  </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 <style>
-.bg-prime {
-  background: --var(prime);
-}
-.bg-accent{
-  background:--var(accent);
-}
-.bg-light {
-  background:--var(light);
-}
-.bg-clay {
-  background: --var(clay);
-}
-.txt-prime {
-  background: --var(prime);
-}
-.txt-accent{
-  background:--var(accent);
-}
-.txt-light {
-  background:--var(light);
-}
-.txt-clay {
-  background: --var(clay);
-}
+
 
 @font-face {
   font-family: 'Baloo 2';
@@ -96,6 +73,35 @@
   unicode-range: U+0000-00FF;
 }
 
+.bg-prime {
+  background-color: var(--prime);
+}
+.bg-accent {
+  background-color: var(--accent);
+}
+
+
+.bg-white,.bg-light {
+  background-color: var(--light);
+}
+
+.txt-prime {
+  color: var(--prime);
+}
+
+.txt-accent {
+  color: var(--accent);
+}
+
+.txt-white, txt-light {
+  color: var(--accent);
+}
+
+body {
+  color: var(--text);
+  background-color: var(--lite);
+}
+
 
 h1,
 h2,
@@ -103,39 +109,43 @@ h3,
 h4,
 .h1,
 .brand-font {
-  color: var(--text);
   font-family: var(--font), sans-serif;
 }
+
 a,
-a:hover,  
-.brand-font {
-  color:var(--text);
+a:hover  {
+  color:var(--accent);
 }
 
-body {
-  color: var(--text);
-  background: var(--light); 
-}
 
 .brd-tp {
-border-top: 1px solid var(accent)
+border-top: 1px solid var(--accent)
 }
 
 .brd-bottom {
-  border-bottom: 1px solid var(accent);
+  border-bottom: 1px solid var(--accent);
 }
 
-
-
+.card {
+  border: 1px solid var(--accent);
+}
   </style>
-i</svelte:head>
-<div  style ="
+</svelte:head>
+<div  class="bg-light" style ="
   --font:{font}; 
   --prime:{prime};
   --accent:{accent};
+  --lite:{light}; 
   --light:{light};
   --clay:{clay};
   --text:{text};
+
+    --gray-light: #f8f9fa;
+    --nav-cake: #b3433b;
+    --nav-breakfast: #a86a10;
+    --nav-lunch: #4c6b3c;
+    --nav-dinner: #5b3b73;
+    --nav-dessert: #c25b1a; 
   "
    >
 <Header />

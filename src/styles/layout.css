@@ -64,7 +64,6 @@ footer {
     .card {
         width: 100%;
         max-width: 800px;
-        border: 1px solid var(--prime);
         margin: 0 auto 1em auto;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         padding: 0.5em 1em 0 1em;
