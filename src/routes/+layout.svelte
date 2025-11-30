@@ -2,7 +2,7 @@
     // website/src/routes/+layout.svelte
 	import favicon from '$lib/assets/favicon.svg';
   import { setContext } from 'svelte';
-import '../app.css';
+  import '../app.css';
 	let { children,data } = $props();
     import Header from "$lib/components/header/header.svelte"
      import Footer from "$lib/components/footer.svelte"
@@ -63,7 +63,7 @@ let font = data.settings.fontFamily;
   src: url("/fonts/Delius/Delius-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 600;          /* important for consistent matching */
-  font-display: fallback;        /* or `optional` – see below */
+  font-display: swap;        /* or `optional` – see below */
   unicode-range: U+0000-00FF;
 }
 
