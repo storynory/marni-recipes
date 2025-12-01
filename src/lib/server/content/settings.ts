@@ -88,7 +88,12 @@ export function getSiteSettings(): SiteSettings {
 	console.log("[settings.ts] Schemes found:", schemes.map(s => s.slug));
 
 	// Case-insensitive match (correct)
-	const activeSlug: string | undefined = data.activeScheme;
+const activeSlug: string | undefined = data.activeScheme
+	?.trim()
+	.toLowerCase()
+	.replace(/\s+/g, '-')       // normalise spaces to hyphens
+	.replace(/[^a-z0-9-]/g, '') // strip anything unsafe
+	.replace(/-+/g, '-');
 
 	let activeColourScheme = null;
 
