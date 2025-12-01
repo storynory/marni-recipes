@@ -65,7 +65,7 @@
 </nav>
 
 
-<nav class="desk brand-font txt-center page -p-y--sm -m-b bg-prime tags">
+<nav class="desk brand-font txt-center page -p-y--sm -m-b bg-light tags">
     
        <a class="home" href="/" aria-current={page.url.pathname === '/'}><Home/>Home</a>
       <a class="cake" href="/recipes/tag/cakes" aria-current={page.url.pathname === '/recipes/tag/cakes'}><Cake></Cake>Cakes</a> 
