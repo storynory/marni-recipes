@@ -15,97 +15,113 @@ export type ColourScheme = {
 
 export type SiteSettings = {
 	siteTitle: string;
-
-	// old name still used in +page.svelte <svelte:head>
 	strapline?: string;
-
-	// new explicit name from YAML (siteTagline)
 	siteTagline?: string;
 
-	// hero intro text
+	siteIntroTitle?: string;
 	siteIntro?: string;
 
-	// path to hero portrait image
+	blogPageIntro?: string;
+	seasonsPageIntro?: string;
+	recipesPageIntro?: string;
+
 	portrait?: string;
-  blogPageIntro?: string;	
-  // slug of featured season, e.g. "christmas" or "easter"
 	featuredSeason?: string;
-recipesPageIntro: "",
-fontFamily?: string;
-activeColourScheme?: ColourScheme | null;
+	fontFamily?: string;
+
+	activeColourScheme?: ColourScheme | null;
 };
+
+const DEFAULT_SCHEME: ColourScheme = {
+	slug: 'default',
+	title: 'Default',
+	prime: '#e3d2b7',
+	accent: '#00634e',
+	second: '#f4e8d7',
+	gray: '#f8f9fa',
+	text: '#333333'
+};
+
+function createColourScheme(slug: string, data: any): ColourScheme {
+	return {
+		slug,
+		title: data.title ?? 'Unnamed Scheme',
+		prime: data.prime ?? DEFAULT_SCHEME.prime,
+		accent: data.accent ?? DEFAULT_SCHEME.accent,
+		second: data.second ?? DEFAULT_SCHEME.second,
+		gray: data.gray ?? DEFAULT_SCHEME.gray,
+		text: data.text ?? DEFAULT_SCHEME.text
+	};
+}
 
 export function getSiteSettings(): SiteSettings {
 	const filePath = path.join(CONTENT_ROOT, 'settings', 'site.md');
 
-	// --------------------------------
-	// Load main settings
-	// --------------------------------
 	let data: any = {};
 	if (fs.existsSync(filePath)) {
 		data = readMarkdownFile(filePath).data ?? {};
 	}
 
+	if (data.main) {
+		console.warn('[settings.ts] WARNING: Old "main:" object detected. Config is now flat.');
+	}
+
 	const tagline =
-		(data.siteTagline as string | undefined) ??
-		(data.strapline as string | undefined) ??
+		data.siteTagline ??
+		data.strapline ??
 		'';
 
-	// --------------------------------
-	// Load colour schemes (simple)
-	// --------------------------------
+	// Load colour schemes
 	const schemesFolder = path.join(CONTENT_ROOT, 'colour-schemes');
 	let schemes: ColourScheme[] = [];
 
 	if (fs.existsSync(schemesFolder)) {
-		for (const file of fs.readdirSync(schemesFolder)) {
-			if (!file.endsWith('.md')) continue;
-
-			const full = path.join(schemesFolder, file);
-			const { data: scheme } = readMarkdownFile(full);
-			const slug = file.replace(/\.md$/, '');
-
-			schemes.push({
-				slug,
-				title: scheme.title,
-				prime: scheme.prime,
-				accent: scheme.accent,
-				second: scheme.second,
-				gray: scheme.gray,
-				text: scheme.text
-			});
+		const files = fs.readdirSync(schemesFolder).filter(f => f.endsWith('.md'));
+		for (const filename of files) {
+			const md = readMarkdownFile(path.join(schemesFolder, filename));
+			const schemeData = md.data ?? {};
+			const slug = filename.replace(/\.md$/, '');
+			schemes.push(createColourScheme(slug, schemeData));
 		}
 	}
 
-	const activeSlug = data.main?.activeScheme as string | undefined;
-	const activeColour = activeSlug
-		? schemes.find((s) => s.slug === activeSlug) ?? null
-		: null;
+	console.log("[settings.ts] Schemes found:", schemes.map(s => s.slug));
 
-	// --------------------------------
-	// Return settings
-	// --------------------------------
+	// Case-insensitive match (correct)
+	const activeSlug: string | undefined = data.activeScheme;
+
+	let activeColourScheme = null;
+
+	if (activeSlug) {
+		activeColourScheme =
+			schemes.find(s => s.slug.toLowerCase() === activeSlug.toLowerCase()) ?? null;
+	}
+
+	if (!activeColourScheme) {
+		activeColourScheme = DEFAULT_SCHEME;
+	}
+
+	console.log("[settings.ts] Active scheme:", activeSlug);
+	console.log("[settings.ts] Active colours:", activeColourScheme);
+
 	return {
 		siteTitle: data.siteTitle ?? 'Marni’s Cooking Website',
-
 		strapline: data.strapline ?? tagline,
 		siteTagline: tagline,
 
 		siteIntroTitle: data.siteIntroTitle,
 		siteIntro: data.siteIntro,
 
-		blogPageIntro:
-			data.blogPageIntro ??
-			'Diary of a girl who loves to cook and bake',
-
+		blogPageIntro: data.blogPageIntro ?? 'Diary of a girl who loves to cook and bake',
 		seasonsPageIntro: data.seasonsPageIntro,
 		recipesPageIntro: data.recipesPageIntro,
 
 		portrait: data.portrait,
 		featuredSeason: data.featuredSeason,
+
 		fontFamily: data.fontFamily ?? 'Comfortaa',
 
-		activeColourScheme: activeColour
+		activeColourScheme
 	};
 }
 
